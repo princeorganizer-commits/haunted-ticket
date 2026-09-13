@@ -1,2 +1,2 @@
 # haunted-ticket
-Project HEINE
+Project HEANE
