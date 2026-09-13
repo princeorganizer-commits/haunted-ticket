@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบสแกนตั๋วเข้างาน - บ้านผีเฮี้ยน</title>
+    <!-- Library สำหรับเปิดกล้องสแกน QR Code -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        * { box-sizing: border-box; font-family: 'Tahoma', sans-serif; }
+        body { background: #0a0a0a; color: #fff; margin: 0; padding: 15px; text-align: center; }
+        h2 { color: #ff3333; margin-bottom: 5px; }
+        #reader { width: 100%; max-width: 400px; margin: 15px auto; border: 2px solid #800000; border-radius: 8px; overflow: hidden; }
+        .result-box { max-width: 400px; margin: 15px auto; padding: 20px; border-radius: 8px; display: none; font-size: 18px; font-weight: bold; }
+        .success { background: #006622; border: 2px solid #00ff66; color: #fff; }
+        .error { background: #660000; border: 2px solid #ff3333; color: #fff; }
+        .btn-next { background: #ffcc00; color: #000; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 15px; display: none; width: 100%; max-width: 400px; }
+    </style>
+</head>
+<body>
+
+    <h2>👻 ระบบสแกนตั๋วเข้าชม 👻</h2>
+    <p style="color: #aaa; font-size: 13px;">งาน “เฮี้ยน” จักรวาลบ้านผีเฮี้ยน</p>
+
+    <!-- กล้องสแกน QR Code -->
+    <div id="reader"></div>
+
+    <!-- กล่องแสดงผลลัพธ์ -->
+    <div id="result-box" class="result-box"></div>
+    <button id="btn-next" class="btn-next" onclick="resetScanner()">สแกนตั๋วใบถัดไป ➔</button>
+
+<script>
+    let html5QrcodeScanner;
+    let isScanning = true;
+
+    function onScanSuccess(decodedText, decodedResult) {
+        if (!isScanning) return;
+        isScanning = false;
+
+        // สั่นเตือนเมื่อสแกนติด (บนมือถือ)
+        if (navigator.vibrate) navigator.vibrate(200);
+
+        // ส่งรหัสตั๋วไปตรวจสอบที่ Server
+        fetch('/api/scan-ticket', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ticketId: decodedText })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const resultBox = document.getElementById('result-box');
+            const btnNext = document.getElementById('btn-next');
+            resultBox.style.display = 'block';
+            btnNext.style.display = 'inline-block';
+
+            if (data.success) {
+                resultBox.className = 'result-box success';
+                resultBox.innerHTML = `
+                    ✅ ผ่านเข้าชมได้!<br>
+                    <span style="font-size: 14px; font-weight: normal;">
+                        ชื่อ: ${data.ticket.name}<br>
+                        วันที่: ${data.ticket.date}<br>
+                        รอบเวลา: ${data.ticket.slot} น.<br>
+                        จำนวน: ${data.ticket.quantity} ท่าน
+                    </span>
+                `;
+            } else {
+                resultBox.className = 'result-box error';
+                resultBox.innerHTML = `❌ ${data.message}`;
+            }
+        })
+        .catch(err => {
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+            isScanning = true;
+        });
+    }
+
+    function resetScanner() {
+        document.getElementById('result-box').style.display = 'none';
+        document.getElementById('btn-next').style.display = 'none';
+        isScanning = true;
+    }
+
+    // เริ่มทำงานกล้อง
+    html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+</script>
+</body>
+</html>
