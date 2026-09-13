@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>งาน "เฮี้ยน" จักรวาลบ้านผีเฮี้ยน</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+        body { 
+            background-color: #050505; 
+            color: #ffffff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 15px; 
+        }
+        .main-card { 
+            background: #0d0000; 
+            width: 100%; 
+            max-width: 420px; 
+            padding: 25px 20px; 
+            border-radius: 16px; 
+            border: 2px solid #ff1a1a; 
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4); 
+            text-align: center; 
+        }
+        .header-title { 
+            color: #ff2a2a; 
+            font-size: 26px; 
+            font-weight: 700; 
+            margin-bottom: 5px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+        .sub-header { color: #cccccc; font-size: 16px; margin-bottom: 12px; }
+        .slogan { 
+            color: #ffcc00; 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2); 
+            padding-bottom: 15px; 
+        }
+        .info-box { 
+            background: #140505; 
+            border: 1px solid #330000; 
+            border-radius: 12px; 
+            padding: 15px; 
+            text-align: center; 
+            font-size: 14px; 
+            color: #dddddd; 
+            line-height: 1.8; 
+            margin-bottom: 25px; 
+        }
+        .form-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 13px; color: #aaa; margin-bottom: 5px; }
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            background: #1f1f1f; 
+            border: 1px solid #444; 
+            border-radius: 8px; 
+            color: #fff; 
+            font-size: 14px; 
+            outline: none; 
+        }
+        input:focus, select:focus { border-color: #ff2a2a; }
+        
+        /* ส่วนสแกนจ่ายเงิน */
+        .payment-section {
+            background: #180808;
+            border: 1px solid #ff2a2a;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .payment-title {
+            color: #ffcc00;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .qr-pay-img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-submit { 
+            width: 100%; 
+            padding: 14px; 
+            background: linear-gradient(135deg, #cc0000, #880000); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4); 
+        }
+
+        /* บัตรเข้าชมเมื่อจองสำเร็จ */
+        #ticketResult { display: none; margin-top: 10px; }
+        .success-banner { 
+            color: #4cd964; 
+            font-size: 22px; 
+            font-weight: 700; 
+            margin-bottom: 5px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+        .instruction-text { color: #aaaaaa; font-size: 13px; margin-bottom: 20px; line-height: 1.4; }
+        .ticket-white-card { 
+            background: #ffffff; 
+            color: #000000; 
+            border-radius: 16px; 
+            padding: 25px 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
+        }
+        .ticket-title { 
+            color: #990000; 
+            font-size: 22px; 
+            font-weight: 700; 
+            margin-bottom: 15px; 
+            border-bottom: 1px dashed #ccc; 
+            padding-bottom: 10px; 
+        }
+        .ticket-details { font-size: 16px; line-height: 1.8; margin-bottom: 15px; text-align: left; }
+        .ticket-details strong { font-weight: 700; color: #111; }
+        #qrcode { display: flex; justify-content: center; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <div class="header-title">👻 ยินดีต้อนรับนักล่าผี 👻</div>
+    <div class="sub-header">งาน “เฮี้ยน” จักรวาลบ้านผีเฮี้ยน</div>
+    <div class="slogan">"ข้าจะจบความเฮี้ยนเอง"</div>
+
+    <div class="info-box">
+        📍 <strong>สถานที่:</strong> ห้างโรบินสัน สมุทรปราการ<br>
+        📅 <strong>วันที่:</strong> 25 - 31 ตุลาคม 2569<br>
+        ⏰ <strong>เวลา:</strong> 10.00 - 21.00 น. (พัก 12.00 - 13.00 น.)<br>
+        🎟️ <strong>บัตรราคา:</strong> 120 บาท (รอบละ 10 นาที / จำกัด 10 คน)
+    </div>
+
+    <form id="bookingForm">
+        <div class="form-group">
+            <label>ชื่อนักล่าผี (ชื่อ-นามสกุล)</label>
+            <input type="text" id="name" placeholder="กรอกชื่อ-นามสกุล" required>
+        </div>
+
+        <div class="form-group">
+            <label>วันที่เข้าชม (25 - 31 ต.ค. 2569)</label>
+            <input type="date" id="date" min="2026-10-25" max="2026-10-31" required>
+        </div>
+
+        <div class="form-group">
+            <label>เลือกรอบเข้าชม (รอบละ 10 นาที)</label>
+            <select id="slot" required>
+                <option value="">-- เลือกรอบเวลา --</option>
+                <!-- ช่วงเช้า -->
+                <option value="10:00 น.">10:00 น.</option>
+                <option value="10:10 น.">10:10 น.</option>
+                <option value="10:20 น.">10:20 น.</option>
+                <option value="10:30 น.">10:30 น.</option>
+                <option value="10:40 น.">10:40 น.</option>
+                <option value="10:50 น.">10:50 น.</option>
+                <option value="11:00 น.">11:00 น.</option>
+                <option value="11:10 น.">11:10 น.</option>
+                <option value="11:20 น.">11:20 น.</option>
+                <option value="11:30 น.">11:30 น.</option>
+                <option value="11:40 น.">11:40 น.</option>
+                <option value="11:50 น.">11:50 น.</option>
+                <!-- ช่วงบ่าย-ค่ำ -->
+                <option value="13:00 น.">13:00 น.</option>
+                <option value="13:10 น.">13:10 น.</option>
+                <option value="13:20 น.">13:20 น.</option>
+                <option value="13:30 น.">13:30 น.</option>
+                <option value="13:40 น.">13:40 น.</option>
+                <option value="13:50 น.">13:50 น.</option>
+                <option value="14:00 น.">14:00 น.</option>
+                <option value="14:10 น.">14:10 น.</option>
+                <option value="14:20 น.">14:20 น.</option>
+                <option value="14:30 น.">14:30 น.</option>
+                <option value="14:40 น.">14:40 น.</option>
+                <option value="14:50 น.">14:50 น.</option>
+                <option value="15:00 น.">15:00 น.</option>
+                <option value="15:10 น.">15:10 น.</option>
+                <option value="15:20 น.">15:20 น.</option>
+                <option value="15:30 น.">15:30 น.</option>
+                <option value="15:40 น.">15:40 น.</option>
+                <option value="15:50 น.">15:50 น.</option>
+                <option value="16:00 น.">16:00 น.</option>
+                <option value="16:10 น.">16:10 น.</option>
+                <option value="16:20 น.">16:20 น.</option>
+                <option value="16:30 น.">16:30 น.</option>
+                <option value="16:40 น.">16:40 น.</option>
+                <option value="16:50 น.">16:50 น.</option>
+                <option value="17:00 น.">17:00 น.</option>
+                <option value="17:10 น.">17:10 น.</option>
+                <option value="17:20 น.">17:20 น.</option>
+                <option value="17:30 น.">17:30 น.</option>
+                <option value="17:40 น.">17:40 น.</option>
+                <option value="17:50 น.">17:50 น.</option>
+                <option value="18:00 น.">18:00 น.</option>
+                <option value="18:10 น.">18:10 น.</option>
+                <option value="18:20 น.">18:20 น.</option>
+                <option value="18:30 น.">18:30 น.</option>
+                <option value="18:40 น.">18:40 น.</option>
+                <option value="18:50 น.">18:50 น.</option>
+                <option value="19:00 น.">19:00 น.</option>
+                <option value="19:10 น.">19:10 น.</option>
+                <option value="19:20 น.">19:20 น.</option>
+                <option value="19:30 น.">19:30 น.</option>
+                <option value="19:40 น.">19:40 น.</option>
+                <option value="19:50 น.">19:50 น.</option>
+                <option value="20:00 น.">20:00 น.</option>
+                <option value="20:10 น.">20:10 น.</option>
+                <option value="20:20 น.">20:20 น.</option>
+                <option value="20:30 น.">20:30 น.</option>
+                <option value="20:40 น.">20:40 น.</option>
+                <option value="20:50 น.">20:50 น.</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>จำนวนผู้เข้าชม (ท่าน)</label>
+            <input type="number" id="quantity" min="1" max="10" value="1" required>
+        </div>
+
+        <!-- ส่วนแสดง QR Code ชำระเงิน -->
+        <div class="payment-section">
+            <div class="payment-title">💳 สแกน QR Code เพื่อชำระเงิน</div>
+            <img src="payment-qr.jpg" alt="QR Code รับเงิน" class="qr-pay-img">
+        </div>
+
+        <div class="form-group">
+            <label>แนบสลิปโอนเงิน (โอนเข้าบัญชี กฤตธีญาภา จารุสันต์)</label>
+            <input type="file" id="slip" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="btn-submit">ยืนยันและตรวจสอบสลิป</button>
+    </form>
+
+    <div id="ticketResult">
+        <div class="success-banner">✅ ออกบัตรเข้าชมสำเร็จ!</div>
+        <div class="instruction-text">โปรดบันทึกภาพหน้าจอนี้ไว้สำหรับสแกนผ่านประตู</div>
+        
+        <div class="ticket-white-card">
+            <div class="ticket-title">ตั๋วเข้าชมบ้านผีเฮี้ยน</div>
+            <div class="ticket-details">
+                <div><strong>ชื่อนักล่าผี:</strong> <span id="resName"></span></div>
+                <div><strong>รอบเวลา:</strong> <span id="resSlot"></span></div>
+                <div><strong>จำนวน:</strong> <span id="resQty"></span> ท่าน</div>
+            </div>
+            <div id="qrcode"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData();
+        const name = document.getElementById('name').value;
+        const date = document.getElementById('date').value;
+        const slot = document.getElementById('slot').value;
+        const quantity = document.getElementById('quantity').value;
+
+        formData.append('name', name);
+        formData.append('date', date);
+        formData.append('slot', slot);
+        formData.append('quantity', quantity);
+        formData.append('slip', document.getElementById('slip').files[0]);
+
+        alert('กำลังตรวจสอบสลิปโอนเงิน กรุณารอสักครู่...');
+
+        try {
+            const res = await fetch('/api/verify-slip', { method: 'POST', body: formData });
+            const data = await res.json();
+            
+            if (data.success) {
+                document.getElementById('bookingForm').style.display = 'none';
+                document.getElementById('ticketResult').style.display = 'block';
+
+                document.getElementById('resName').innerText = name;
+                document.getElementById('resSlot').innerText = slot;
+                document.getElementById('resQty').innerText = quantity;
+
+                document.getElementById("qrcode").innerHTML = "";
+                new QRCode(document.getElementById("qrcode"), {
+                    text: data.ticketId,
+                    width: 170,
+                    height: 170
+                });
+            } else {
+                alert(data.message);
+            }
+        } catch (err) {
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+        }
+    });
+</script>
+
+</body>
+</html>
